@@ -69,13 +69,13 @@ function drawRainBowGradient(){
 		蓝色  【RGB】0, 0, 255 【CMYK】100, 100, 0, 0 
 		紫色  【RGB】139, 0, 255 【CMYK】45, 100, 0, 0
 	 */
-	radial.addColorStop(0,'rgba(255, 0, 0,0.3)');
-	radial.addColorStop(0.1667,'rgba(255, 165, 0,0.3)');
-	radial.addColorStop(0.3334,'rgba(255, 255, 0,0.53');
-	radial.addColorStop(0.5001,'rgba(0,255,0,0.3)');
-	radial.addColorStop(0.6668,'rgba(0, 127, 255,0.3)');
-	radial.addColorStop(0.8335,'rgba(0, 0, 255,0.3)');
-	radial.addColorStop(1,'rgba(139, 0, 255,0.3	)');
+	radial.addColorStop(0,'rgba(255, 0, 0, 0.4)');
+	radial.addColorStop(0.1667,'rgba(255, 165, 0, 0.4)');
+	radial.addColorStop(0.3334,'rgba(255, 255, 0, 0.4');
+	radial.addColorStop(0.5001,'rgba(0,255,0, 0.4)');
+	radial.addColorStop(0.6668,'rgba(0, 127, 255, 0.4)');
+	radial.addColorStop(0.8335,'rgba(0, 0, 255, 0.4)');
+	radial.addColorStop(1,'rgba(139, 0, 255, 0.4)');
 	ballCtx.fillStyle = radial;
 	ballCtx.fillRect(0,0,radius * 2,radius * 2);
 	ballCtx.stroke();
@@ -83,28 +83,43 @@ function drawRainBowGradient(){
 
 function drawRoundLine(){
 	ballCtx.lineWidth = 0.1667 * radius;
+	ballCtx.moveTo(oldX,oldY);
+	
+	ballCtx.lineTo(x,y);
+	ballCtx.closePath();
+	ballCtx.stroke();
+	
+	oldX = x;
+	oldY = y;
 }
 
 //需要计算员周的坐标
 //1.获得转完一圈的总时间
 //2.就可以计算出单位时间内转的角度
 //3.每次计算出当前的角度
+var hoop = 1;
 var oldX = radius;
 var oldY = radius;
 function calCoordinate(i){
-	ballCtx.lineWidth = 0.1667 * radius;
 	var perimeter = 2 * Math.PI * radius;
 	var unitTime = 50;
 	//50毫秒计算一次，10s画一圈，那么总时间应该是10 * 1000 / 50; 
 	var totalTime = 10 * 1000 / unitTime;
 	//单位时间内转过的角度
 	var unitAngle = 360 / totalTime;
+	//计算当前是第几圈
+	hoop = (i == totalTime) ? hoop + 1 : hoop;
+	console.log(hoop);
+	//计算x,y的坐标
+	var drawRadius = 0.1667 * radius * hoop;
+	var x = Math.cos(2 * Math.PI / 360 * unitAngle * i) * drawRadius + radius;
+	var y = Math.sin(2 * Math.PI / 360 * unitAngle * i) * drawRadius + radius;
+		ballCtx.moveTo(oldX,oldY);
 	
-	var x = Math.cos(2 * Math.PI / 360 * unitAngle * i) * 50 + radius;
-	var y = Math.sin(2 * Math.PI / 360 * unitAngle * i) * 50 + radius;
-	ballCtx.moveTo(oldX,oldY);
 	ballCtx.lineTo(x,y);
-	console.log(x)
+	ballCtx.closePath();
+	ballCtx.stroke();
+	
 	oldX = x;
 	oldY = y;
 }
@@ -134,4 +149,11 @@ function fillBit(num){
 		num = "0" + num;
 	}
 	return num;
+}
+
+var PenCoordinate = function(oldx,oldy,x,y){
+	this.oldX = radius;
+	this.oldY = radius;
+	this.x = x;
+	this.y = y;
 }

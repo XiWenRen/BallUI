@@ -2,7 +2,6 @@
 var ballCanvas = document.getElementById("ballUI");
 var ballCtx = ballCanvas.getContext("2d");
 //圆的半径
-var radius = 100;
 var seed = (radius * 2) / (25 * 60);
 initBall();
 var usedLength = 0;
@@ -10,7 +9,7 @@ var totalSecends = 1;
 //传入参数要修改，计算方法为开始时间-当前时间 *速度
 //var drarTread = setInterval('drawCenterLine(usedLength += seed)',10);
 drawRainBowGradient();
-setInterval('calCoordinate(totalSecends++)',50);
+setInterval('drawRoundLine(totalSecends++)',50);
 //画一条相对于圆垂直或者水平的直线，把圆分隔成两个部分
 function drawCenterLine(usedLength) {
 	ballCtx.clearRect(0,0,radius * 2,radius * 2);
@@ -81,47 +80,22 @@ function drawRainBowGradient(){
 	ballCtx.stroke();
 }
 
-function drawRoundLine(){
-	ballCtx.lineWidth = 0.1667 * radius;
-	ballCtx.moveTo(oldX,oldY);
-	
-	ballCtx.lineTo(x,y);
-	ballCtx.closePath();
-	ballCtx.stroke();
-	
-	oldX = x;
-	oldY = y;
-}
+//开始画进度线
+var coor1 = new Coordinator();
+function drawRoundLine(i){
 
-//需要计算员周的坐标
-//1.获得转完一圈的总时间
-//2.就可以计算出单位时间内转的角度
-//3.每次计算出当前的角度
-var hoop = 1;
-var oldX = radius;
-var oldY = radius;
-function calCoordinate(i){
-	var perimeter = 2 * Math.PI * radius;
-	var unitTime = 50;
-	//50毫秒计算一次，10s画一圈，那么总时间应该是10 * 1000 / 50; 
-	var totalTime = 10 * 1000 / unitTime;
-	//单位时间内转过的角度
-	var unitAngle = 360 / totalTime;
-	//计算当前是第几圈
-	hoop = (i == totalTime) ? hoop + 1 : hoop;
-	console.log(hoop);
-	//计算x,y的坐标
-	var drawRadius = 0.1667 * radius * hoop;
-	var x = Math.cos(2 * Math.PI / 360 * unitAngle * i) * drawRadius + radius;
-	var y = Math.sin(2 * Math.PI / 360 * unitAngle * i) * drawRadius + radius;
-		ballCtx.moveTo(oldX,oldY);
-	
-	ballCtx.lineTo(x,y);
+	var coor2 = coor1.getCoor(i);
+	coor2.toString();
+	console.log(i);
+	//线宽
+	var color = 30 * i / 200;
+	ballCtx.strokeStyle = 'rgb('+color+','+color+','+color+')';
+	ballCtx.lineCap = "round";
+	ballCtx.beginPath();
+	ballCtx.moveTo(coor2.oldX,coor2.oldY);
+	ballCtx.lineTo(coor2.x,coor2.y);
 	ballCtx.closePath();
 	ballCtx.stroke();
-	
-	oldX = x;
-	oldY = y;
 }
 
 //定义圆的直径，也就是canvas的宽高
@@ -154,6 +128,6 @@ function fillBit(num){
 var PenCoordinate = function(oldx,oldy,x,y){
 	this.oldX = radius;
 	this.oldY = radius;
-	this.x = x;
-	this.y = y;
+	this.x = radius;
+	this.y = radius;
 }

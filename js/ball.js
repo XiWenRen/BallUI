@@ -9,7 +9,7 @@ var totalSecends = 1;
 //传入参数要修改，计算方法为开始时间-当前时间 *速度
 //var drarTread = setInterval('drawCenterLine(usedLength += seed)',10);
 drawRainBowGradient();
-setInterval('drawRoundLine(totalSecends++)',50);
+var drawThread = setInterval('drawRoundLine(totalSecends++)',50);
 //画一条相对于圆垂直或者水平的直线，把圆分隔成两个部分
 function drawCenterLine(usedLength) {
 	ballCtx.clearRect(0,0,radius * 2,radius * 2);
@@ -81,21 +81,38 @@ function drawRainBowGradient(){
 }
 
 //开始画进度线
-var coor1 = new Coordinator();
+var point1 = new Point(0,0);
+var oldPoint = new Point(radius,radius);
 function drawRoundLine(i){
 
-	var coor2 = coor1.getCoor(i);
-	coor2.toString();
-	console.log(i);
+	var point2 = point1.getCoor(i);
 	//线宽
 	var color = 30 * i / 200;
-	ballCtx.strokeStyle = 'rgb('+color+','+color+','+color+')';
-	ballCtx.lineCap = "round";
+	ballCtx.fillStyle = 'rgb('+color+','+color+','+color+')';
+//	ballCtx.lineCap = "round";
+//	ballCtx.lineWidth = 0.1667 * radius;
 	ballCtx.beginPath();
-	ballCtx.moveTo(coor2.oldX,coor2.oldY);
-	ballCtx.lineTo(coor2.x,coor2.y);
+//	ballCtx.moveTo(oldPoint.x,oldPoint.y);
+//	ballCtx.lineTo(point2.x,point2.y);
+	//画圆
+	ballCtx.arc(point2.x,point2.y,0.1667 * radius / 2,0,Math.PI*2,true);
 	ballCtx.closePath();
+	ballCtx.fill();
+//	ballCtx.stroke();
+	oldPoint = point2;
+//	if(i == 210){
+//		window.clearInterval(drawThread)
+//	}
+}
+
+//每次画完一圈之后，固定闪出一个圈的特效
+function drwaRound(){
+	ballCtx.lineWidth = 16.67;
+	ballCtx.beginPath();
+	ballCtx.arc(radius,radius,50,0,Math.PI*2,true);
 	ballCtx.stroke();
+	ballCtx.closePath();
+	
 }
 
 //定义圆的直径，也就是canvas的宽高
@@ -125,9 +142,3 @@ function fillBit(num){
 	return num;
 }
 
-var PenCoordinate = function(oldx,oldy,x,y){
-	this.oldX = radius;
-	this.oldY = radius;
-	this.x = radius;
-	this.y = radius;
-}

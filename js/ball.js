@@ -94,7 +94,7 @@ function drawRoundLine(i){
 	ballCtx.beginPath();
 //	ballCtx.moveTo(oldPoint.x,oldPoint.y);
 //	ballCtx.lineTo(point2.x,point2.y);
-	//画圆
+	//画点
 	ballCtx.arc(point2.x,point2.y,0.1667 * radius / 2,0,Math.PI*2,true);
 	ballCtx.closePath();
 	ballCtx.fill();
@@ -112,7 +112,6 @@ function drwaRound(){
 	ballCtx.arc(radius,radius,50,0,Math.PI*2,true);
 	ballCtx.stroke();
 	ballCtx.closePath();
-	
 }
 
 //定义圆的直径，也就是canvas的宽高

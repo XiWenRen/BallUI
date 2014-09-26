@@ -17,9 +17,6 @@
 				background-color: rgba(255,255,255,1);
 				margin: auto;
 				position: absolute;
-				top: 30%;
-				left: 0;
-				right: 0;
 			}
 			
 			#main{
@@ -27,6 +24,25 @@
 				height: 100%;
 				background-color: grey;
 				position: absolute;
+			}
+			
+			.round{
+				width: 100px;
+				height: 100px;
+				position: absolute;
+				margin: auto;
+				border: 1px solid red;
+				border-radius: 50%;
+			}
+			
+			.unit{
+				width: 200px;
+				height: 200px;
+				border-radius: 50%;
+				position: absolute;
+				left: 0;
+				right: 0;
+				
 			}
 		</style>
 	</head>
@@ -49,8 +65,11 @@
         	3.每日结算，这个再说吧，没想好
         -->
 		<div id="main">
+			<div class="unit"></div>
 			<canvas id="ballUI" height="200" width="200">你的浏览器不支持HTML5 canvas技术</canvas>
+			<div class="round"></div>
 		</div>
+		
 		<script type="text/javascript" src="js/Coordinator.js" ></script>
 		<script src="js/ball.js"></script>
 	</body>

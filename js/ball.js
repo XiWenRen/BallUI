@@ -83,8 +83,8 @@ function drawRainBowGradient(){
 //开始画进度线
 var point1 = new Point(0,0);
 var oldPoint = new Point(radius,radius);
-function drawRoundLine(i){
 
+function drawRoundLine(i){
 	var point2 = point1.getCoor(i);
 	//线宽
 	var color = 30 * i / 200;
@@ -100,18 +100,23 @@ function drawRoundLine(i){
 	ballCtx.fill();
 //	ballCtx.stroke();
 	oldPoint = point2;
-//	if(i == 210){
-//		window.clearInterval(drawThread)
-//	}
+	if(i % 200 == 0){
+		drawRound(i / 200);
+	}
 }
 
 //每次画完一圈之后，固定闪出一个圈的特效
-function drwaRound(){
-	ballCtx.lineWidth = 16.67;
-	ballCtx.beginPath();
-	ballCtx.arc(radius,radius,50,0,Math.PI*2,true);
-	ballCtx.stroke();
-	ballCtx.closePath();
+function drawRound(hoop){
+	console.log(hoop);
+	var theRound = document.createElement("div");
+	theRound.setAttribute("id","id" + hoop);
+	theRound.setAttribute("class","round");
+	var length = 0.1667 * radius * 2 * hoop;
+	theRound.style.width = length;
+	theRound.style.height = length;
+	console.log(length);
+	var unit1 = document.getElementById("unit1");
+	unit1.appendChild(theRound);
 }
 
 //定义圆的直径，也就是canvas的宽高

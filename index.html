@@ -18,21 +18,43 @@
 				margin: auto;
 				position: absolute;
 			}
-			
 			#main{
 				width: 100%;
 				height: 100%;
 				background-color: grey;
 				position: absolute;
 			}
-			
+			/*
+			 * 这个圈的宽高需要js控制变化
+			 * 包括top,left，border-color
+			 */
 			.round{
-				width: 100px;
-				height: 100px;
 				position: absolute;
-				margin: auto;
-				border: 1px solid red;
+				border: 16px solid red;
 				border-radius: 50%;
+				top: 34px;
+				left: 34px;
+				-webkit-animation: roundFlash 1s;
+				}
+			
+			@keyframes roundFlash{
+				0% {-webkit-transform: scale(1);}
+				50%{-webkit-transform: scale(2);}
+				
+			}
+			
+			@-webkit-keyframes roundFlash{
+				0% {-webkit-transform: scale(1);
+					
+				}
+				50% {-webkit-transform: scale(1.1);
+					box-shadow: 0px 0px 30px rgba(10,20,30,1);
+				}
+				
+				100% {-webkit-transform: scale(1);
+					
+				}
+				
 			}
 			
 			.unit{
@@ -40,15 +62,15 @@
 				height: 200px;
 				border-radius: 50%;
 				position: absolute;
+				margin: auto;
 				left: 0;
 				right: 0;
-				
+				top: 30%;
 			}
 		</style>
 	</head>
 
 	<body>
-
 		<!--
         	作者：XiWenRen
         	时间：2014-09-23
@@ -65,9 +87,10 @@
         	3.每日结算，这个再说吧，没想好
         -->
 		<div id="main">
-			<div class="unit"></div>
-			<canvas id="ballUI" height="200" width="200">你的浏览器不支持HTML5 canvas技术</canvas>
-			<div class="round"></div>
+			<div id='unit1' class="unit">
+				<canvas id="ballUI" height="200" width="200">你的浏览器不支持HTML5 canvas技术</canvas>
+				<!--<div class="round"></div>-->
+			</div>
 		</div>
 		
 		<script type="text/javascript" src="js/Coordinator.js" ></script>

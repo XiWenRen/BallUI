@@ -8,7 +8,7 @@ var totalSecends = 1;
 //传入参数要修改，计算方法为开始时间-当前时间 *速度
 //var drarTread = setInterval('drawCenterLine(usedLength += seed)',10);
 drawRainBowGradient();
-var drawThread = setInterval('drawRoundLine(totalSecends++)', 50);
+//var drawThread = setInterval('drawRoundLine(totalSecends++)', 50);
 //画一条相对于圆垂直或者水平的直线，把圆分隔成两个部分
 function drawCenterLine(usedLength) {
 	ballCtx.clearRect(0, 0, radius * 2, radius * 2);
@@ -66,10 +66,8 @@ function drawRainBowGradient() {
 	ballCtx.fillRect(0, 0, radius * 2, radius * 2);
 	ballCtx.stroke();
 }
-
 //开始画进度线
 var point1 = new Point(0, 0);
-
 function drawRoundLine(i) {
 	//获取当前要画的点
 	var point2 = point1.getCoor(i);
@@ -85,7 +83,7 @@ function drawRoundLine(i) {
 	ballCtx.fill();
 	if (i % 200 == 0) {
 		//第一圈的时候，圈的直径是0
-		drawRound(hoop);
+		drawRound(hoop - 1);
 	}
 	//停止动画
 	if (hoop == roundCount) {
@@ -95,6 +93,7 @@ function drawRoundLine(i) {
 
 //每次画完一圈之后，固定闪出一个圈的特效
 function drawRound(hoop) {
+	
 	console.log(hoop);
 	var theRound = document.createElement("div");
 	theRound.setAttribute("id", "id" + hoop);
@@ -103,9 +102,11 @@ function drawRound(hoop) {
 	var roundDaimeter = unitWidth * hoop * 2;
 	theRound.style.width = roundDaimeter + "px";
 	theRound.style.height = roundDaimeter + "px";
+	
+	theRound.style.borderWidth = unitWidth;
 	//圈的定位 计算方式为 当前圆的半径 - 线宽
-	theRound.style.top = radius - roundDaimeter / 2 - 1 + "px";
-	theRound.style.left = radius - roundDaimeter / 2 - 1 + "px";
+	theRound.style.top = radius - roundDaimeter / 2 - unitWidth + "px";
+	theRound.style.left = radius - roundDaimeter / 2 - unitWidth + "px";
 	var unit1 = document.getElementById("unit1");
 	unit1.appendChild(theRound);
 	var a = document.getElementById("id" + hoop);

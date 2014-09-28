@@ -13,10 +13,21 @@
 		
 			#ballUI{
 				border-radius: 50%;
-				box-shadow: 0px 0px 35px rgb(255,255,255);
 				background-color: rgba(255,255,255,1);
 				margin: auto;
 				position: absolute;
+				-webkit-animation: ballFlash 3s infinite ease;
+			}
+			
+			.unit{
+				width: 200px;
+				height: 200px;
+				border-radius: 50%;
+				position: absolute;
+				margin: auto;
+				left: 0;
+				right: 0;
+				top: 30%;
 			}
 			#main{
 				width: 100%;
@@ -31,14 +42,16 @@
 			.round{
 				position: absolute;
 				border-radius: 50%;
-				border: 0px solid rgba(255,255,255,0.9);
 				box-shadow: 0px 0px 10px rgba(255,255,255,0.8);
 				-webkit-animation: roundFlash 0.8s;
 				}
 			
 			@keyframes roundFlash{
 				0% {-webkit-transform: scale(1);}
-				50%{-webkit-transform: scale(2);}
+				50% {-webkit-transform: scale(1.2);
+					box-shadow: 0px 0px 30px rgba(255,255,255,1);
+				}
+				100% {-webkit-transform: scale(1);}
 			}
 			
 			@-webkit-keyframes roundFlash{
@@ -47,18 +60,16 @@
 					box-shadow: 0px 0px 30px rgba(255,255,255,1);
 				}
 				100% {-webkit-transform: scale(1);}
-				
 			}
 			
-			.unit{
-				width: 200px;
-				height: 200px;
-				border-radius: 50%;
-				position: absolute;
-				margin: auto;
-				left: 0;
-				right: 0;
-				top: 30%;
+			@-webkit-keyframes ballFlash{
+				0% {-webkit-transform: scale(1);}
+				50% {-webkit-transform: scale(1);
+					box-shadow: 0px 0px 60px rgba(255,255,255,0.8);
+				}
+				100{
+					-webkit-transform: scale(1);
+				}
 			}
 		</style>
 	</head>

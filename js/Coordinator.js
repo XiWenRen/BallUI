@@ -17,7 +17,7 @@ Point.prototype.getCoor = function(i){
 	isHoopAdded = false;
 	var unitTime = 50;
 	//计算得出，7圈的总长度
-	var totalCir = radius * 7 / 2;
+	var totalCir = radius * Math.PI * 7;
 	//50毫秒计算一次，走完7圈是25分钟，25*60s，25*60*200次
 	var totalTime = 60 * 1000 / unitTime;
 	//当前画的圆的半径，计算方式为：每圈宽度 * 当前圈数 - 线宽 / 2
@@ -27,15 +27,19 @@ Point.prototype.getCoor = function(i){
 	//单位时间内转过的角度 = 360 / 本圈时间
 	var unitAngle = 360 / currTime;
 	//计算当前是第几圈，如果不转换成int，那么会画出漩涡
+
+	var lastTime = (Math.PI * 2 * (radius / roundCount * (this.hoop - 1) - unitWidth / 2) / totalCir) * totalTime;
+	var angleCount = i - lastTime;
+	
 	if(i == parseInt(currTime)){
 		this.hoop ++;
+		console.log(this.hoop);
 		isHoopAdded = true;
 	}
-//	var hoop = parseInt(i / totalTime) + 1;
 
 	//计算x,y的坐标
-	this.x = (Math.cos(2 * Math.PI / 360 * unitAngle * i) * drawRadius + radius);
-	this.y = (Math.sin(2 * Math.PI / 360 * unitAngle * i) * drawRadius + radius);
+	this.x = (Math.cos(2 * Math.PI / 360 * unitAngle * angleCount) * drawRadius + radius);
+	this.y = (Math.sin(2 * Math.PI / 360 * unitAngle * angleCount) * drawRadius + radius);
 	return new Point(this.x,this.y,this.hoop);
 }
 

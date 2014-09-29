@@ -4,7 +4,7 @@ var ballCtx = ballCanvas.getContext("2d");
 var seed = (radius * 2) / (25 * 60);
 initBall();
 var usedLength = 0;
-var totalSecends = 1;
+var totalSecends = 0;
 //传入参数要修改，计算方法为开始时间-当前时间 *速度
 //var drarTread = setInterval('drawCenterLine(usedLength += seed)',10);
 drawRainBowGradient();
@@ -62,7 +62,6 @@ function drawRainBowGradient() {
 	for (var i = 0; i <= roundCount; i++) {
 		var rgb = getColorByHoop(i);
 		radial.addColorStop(i / roundCount, 'rgba(' + rgb + ',0.5)')
-		console.log(i / (roundCount));
 	}
 	ballCtx.fillStyle = radial;
 	ballCtx.fillRect(0, 0, radius * 2, radius * 2);
@@ -80,10 +79,12 @@ function drawRoundLine(i) {
 	ballCtx.fillStyle = 'rgba(' + rgb + ',0.1)';
 	ballCtx.beginPath();
 	//画点
-	ballCtx.arc(point2.x, point2.y, unitWidth / 2, 0 + 1.8 * i , Math.PI * 2, true);
+	ballCtx.arc(point2.x, point2.y, unitWidth / 2, 0, Math.PI * 2, true);
 	ballCtx.closePath();
 	ballCtx.fill();
 	if (point2.isHoopAdded) {
+		console.log(hoop);
+		totalSecends = 0;
 		drawRound(hoop);
 	}
 	//停止动画

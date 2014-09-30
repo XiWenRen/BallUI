@@ -1,14 +1,30 @@
 var ballCanvas = document.getElementById("ballUI");
 var ballCtx = ballCanvas.getContext("2d");
+
+
 //圆的半径
 var seed = (radius * 2) / (25 * 60);
 initBall();
 var usedLength = 0;
 var totalSecends = 0;
+
+var isPause = false;
+
 //传入参数要修改，计算方法为开始时间-当前时间 *速度
 //var drarTread = setInterval('drawCenterLine(usedLength += seed)',10);
 drawRainBowGradient();
 var drawThread = setInterval('drawRoundLine(totalSecends++)', 50);
+//暂停/开启始终
+ballCanvas.onclick = function(){
+	//如果不是暂停，则暂停
+	if(!isPause){
+		window.clearInterval(drawThread);
+	}else{
+		drawThread = setInterval('drawRoundLine(totalSecends++)', 50);
+	}
+	isPause = !isPause;
+}
+
 //画一条相对于圆垂直或者水平的直线，把圆分隔成两个部分
 function drawCenterLine(usedLength) {
 	ballCtx.clearRect(0, 0, radius * 2, radius * 2);
@@ -30,7 +46,6 @@ function drawCenterLine(usedLength) {
 
 	//绘制渐变
 	var startRadioX = Math.abs(usedLength - (radius * 2)) > 1 ? usedLength : radius;
-	//	console.log(startRadioX)
 	var radial = ballCtx.createRadialGradient(startRadioX, radius, 0, radius, radius, radius);
 	radial.addColorStop(0, 'rgba(255,255,255,0.6)');
 	radial.addColorStop(1, 'rgba(80,80,80,0.4)');
@@ -50,9 +65,8 @@ function drawCenterLine(usedLength) {
 
 	//如果到达圆的最右侧，则停止
 	if (usedLength >= radius * 2) {
-		window.clearInterval(drarTread);
+		window.clearInterval(drawThread);
 		usedLength = 0;
-		totalSecends = 0;
 	}
 }
 
@@ -61,12 +75,13 @@ function drawRainBowGradient() {
 	var radial = ballCtx.createRadialGradient(radius, radius, 0, radius, radius, radius);
 	for (var i = 0; i <= roundCount; i++) {
 		var rgb = getColorByHoop(i);
-		radial.addColorStop(i / roundCount, 'rgba(' + rgb + ',0.5)')
+		radial.addColorStop(i / roundCount, 'rgba(' + rgb + ',0.5)');
 	}
 	ballCtx.fillStyle = radial;
 	ballCtx.fillRect(0, 0, radius * 2, radius * 2);
 	ballCtx.stroke();
 }
+
 //开始画进度线
 var point1 = new Point(0, 0, 1);
 function drawRoundLine(i) {
@@ -83,20 +98,17 @@ function drawRoundLine(i) {
 	ballCtx.closePath();
 	ballCtx.fill();
 	if (point2.isHoopAdded) {
-		console.log(hoop);
 		totalSecends = 0;
-		drawRound(hoop);
+		drawRound(hoop -1);
 	}
 	//停止动画
-	if (hoop == roundCount) {
+	if (hoop - 1 == roundCount) {
 		window.clearInterval(drawThread);
 	}
 }
 
 //每次画完一圈之后，固定闪出一个圈的特效
 function drawRound(hoop) {
-	
-	console.log(hoop);
 	var theRound = document.createElement("div");
 	theRound.setAttribute("id", "id" + hoop);
 	theRound.setAttribute("class", "round");

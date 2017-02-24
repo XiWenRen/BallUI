@@ -85,22 +85,22 @@ function drawRainBowGradient() {
 //开始画进度线
 var point1 = new Point(0, 0, 1);
 function drawRoundLine(i) {
-	//获取当前要画的点
 	var point2 = point1.getCoor(i);
 	//获得当前的圈数
 	var hoop = point2.hoop;
+	if (point2.isHoopAdded) {
+		totalSecends = 0;
+		drawRound(hoop -1);
+	}
+
 	//通过圈数获得当前应该画的颜色
-	var rgb = getColorByHoop(hoop);
+	var rgb = getColorByHoop(point2.isHoopAdded ? hoop - 1 : hoop );
 	ballCtx.fillStyle = 'rgba(' + rgb + ',0.1)';
 	ballCtx.beginPath();
 	//画点
 	ballCtx.arc(point2.x, point2.y, unitWidth / 2, 0, Math.PI * 2, true);
 	ballCtx.closePath();
 	ballCtx.fill();
-	if (point2.isHoopAdded) {
-		totalSecends = 0;
-		drawRound(hoop -1);
-	}
 	//停止动画
 	if (hoop - 1 == roundCount) {
 		window.clearInterval(drawThread);
@@ -113,18 +113,16 @@ function drawRound(hoop) {
 	theRound.setAttribute("id", "id" + hoop);
 	theRound.setAttribute("class", "round");
 	//圈的直径 计算方式为 当前圆的半径 * 2，就是整个div的宽度
-	var roundDaimeter = unitWidth * hoop * 2;
+	var roundDaimeter = radius * 2;
 	theRound.style.width = roundDaimeter + "px";
 	theRound.style.height = roundDaimeter + "px";
-	
+	theRound.style.background = 'transparent';
+	theRound.style.border = (unitWidth / 2) + 'px solid ' + 'rgb(' + getColorByHoop(hoop) + ')'
+
 	//设置圈的阴影
-	theRound.style.boxShadow = "0px 0px 20px rgba(" + getColorByHoop(8) + ",0.5)";
-	//圈的定位 计算方式为 当前圆的半径 - 线宽
-	theRound.style.top = radius - roundDaimeter / 2 + "px";
-	theRound.style.left = radius - roundDaimeter / 2  + "px";
+	theRound.style.animation = "roundFlash 1s ease-in-out forwards";
 	var unit1 = document.getElementById("unit1");
 	unit1.appendChild(theRound);
-	var a = document.getElementById("id" + hoop);
 }
 
 //定义圆的直径，也就是canvas的宽高
@@ -159,12 +157,12 @@ function fillBit(num) {
  * 在这个圆中共有7圈，彩虹色
  */
 function getColorByHoop(hoop) {
-	//	赤色 【RGB】255, 0, 0 【CMYK】 0, 100, 100, 0 
-	//	橙色 【RGB】 255, 165, 0 【CMYK】0, 35, 100, 0 
+	//	赤色 【RGB】255, 0, 0 【CMYK】 0, 100, 100, 0
+	//	橙色 【RGB】 255, 165, 0 【CMYK】0, 35, 100, 0
 	//	黄色 【RGB】255, 255, 0 【CMYK】0, 0, 100, 0
-	//	绿色 【RGB】0, 255, 0 【CMYK】100, 0, 100, 0 
-	//	青色 【RGB】0, 127, 255 【CMYK】100, 50, 0, 0 
-	//	蓝色 【RGB】0, 0, 255 【CMYK】100, 100, 0, 0 
+	//	绿色 【RGB】0, 255, 0 【CMYK】100, 0, 100, 0
+	//	青色 【RGB】0, 127, 255 【CMYK】100, 50, 0, 0
+	//	蓝色 【RGB】0, 0, 255 【CMYK】100, 100, 0, 0
 	//	紫色 【RGB】139, 0, 255 【CMYK】45, 100, 0, 0
 	var rgb;
 	switch (hoop) {
